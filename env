@@ -1,2 +1,2 @@
-SERVICE_NAME=
-MONGO_URL=
+SERVICE_NAME=reskybe
+MONGO_URL=mongodb+srv://Ihsan:ihsanganteng@cluster0.clpdj.mongodb.net/db_resky
