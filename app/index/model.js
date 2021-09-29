@@ -9,6 +9,7 @@ let photoSchema = mongoose.Schema({
     },
     image: {
         type: String,
+        required: [true, 'Gambar Wajib Ada']
     }
 }, {timestamps: true})
 

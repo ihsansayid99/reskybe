@@ -33,7 +33,7 @@ module.exports = {
                     try {
                         const photos = Photo({
                             category,
-                            image
+                            image: fileName
                         })
                         await photos.save();
                         req.flash('alertMsg', 'Berhasil Tambah Gambar')
