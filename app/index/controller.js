@@ -1,7 +1,4 @@
-const config = require('../../config')
-const path = require('path')
 const Photo = require('./model')
-const fs = require('fs')
 
 module.exports = {
     viewIndex: async (req,res) => {

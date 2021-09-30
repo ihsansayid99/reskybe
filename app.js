@@ -8,6 +8,7 @@ const session = require('express-session')
 const flash = require('connect-flash')
 
 const indexRouter = require('./app/index/router');
+const listImageRouter = require('./app/api/router');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/images', express.static(path.join(__dirname,'images')))
+app.use('/get-images', listImageRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
