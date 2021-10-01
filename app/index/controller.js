@@ -1,11 +1,13 @@
 const Photo = require('./model')
+const cloudinary = require('../../config/cloudinary')
+const upload = require('../../config/upload')
 
 module.exports = {
     viewIndex: async (req,res) => {
         try{
             const alertMessage = req.flash('alertMsg')
             const alertStatus = req.flash('alertStatus')
-            const alert = { message: alertMessage, status: alertStatus };
+            const alert = { message: alertMessage, status: alertStatus};
             res.render('index', {
                 alert
             })
@@ -15,23 +17,37 @@ module.exports = {
     },
     actionUpload: async(req,res) => {
         try {
-            const { category } = req.body
-            if(!req.file){
+            await upload(req,res)
+            if(req.files.length <= 0){
                 console.log('Error : Image Kosong!')
+                req.flash('alertMsg', 'Gagal Upload')
+                req.flash('alertStatus', 'danger')
                 res.redirect('/')    
             } else {
-                const image = req.file.path
-                const photos = Photo({
-                    category,
-                    image
-                })
-                await photos.save();
+                const files = req.files
+                const { category } = req.body
+                for(const file of files){
+                   await cloudinary.uploads(file.path).then(res => {
+                       const photos = Photo({
+                            category,
+                            image: res.url
+                        })
+                        photos.save();
+                   }).catch(err => {
+                       req.flash('alertMsg', 'Gagal Upload')
+                       req.flash('alertStatus', 'danger')
+                       console.log('error catch cloudinary', err);
+                   }).finally(() => {
+                   })
+                }
                 req.flash('alertMsg', 'Berhasil Tambah Gambar')
                 req.flash('alertStatus', 'success')
                 res.redirect('/')
             }
         } catch (error) {
-            console.log('Error : ', error.message)
+            console.log('ErrorCatch: ', error.message)
+            req.flash('alertMsg', 'Gagal Upload')
+            req.flash('alertStatus', 'danger')
             res.redirect('/')
         }
     }
