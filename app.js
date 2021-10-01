@@ -6,7 +6,7 @@ const logger = require('morgan');
 const methodOverride = require('method-override')
 const session = require('express-session')
 const flash = require('connect-flash')
-
+const cors = require('cors')
 const indexRouter = require('./app/index/router');
 const listImageRouter = require('./app/api/router');
 
@@ -29,6 +29,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cors())
 
 app.use('/', indexRouter);
 app.use('/images', express.static(path.join(__dirname,'images')))
