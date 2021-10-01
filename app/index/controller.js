@@ -32,6 +32,7 @@ module.exports = {
                             category,
                             image: res.url
                         })
+                        console.log(res.url);
                         photos.save();
                    }).catch(err => {
                        req.flash('alertMsg', 'Gagal Upload Cloudinary')
