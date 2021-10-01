@@ -20,7 +20,7 @@ module.exports = {
             await upload(req,res)
             if(req.files.length <= 0){
                 console.log('Error : Image Kosong!')
-                req.flash('alertMsg', 'Gagal Upload')
+                req.flash('alertMsg', 'Gagal Upload Image Kosong')
                 req.flash('alertStatus', 'danger')
                 res.redirect('/')    
             } else {
@@ -34,7 +34,7 @@ module.exports = {
                         })
                         photos.save();
                    }).catch(err => {
-                       req.flash('alertMsg', 'Gagal Upload')
+                       req.flash('alertMsg', 'Gagal Upload Cloudinary')
                        req.flash('alertStatus', 'danger')
                        console.log('error catch cloudinary', err);
                    }).finally(() => {
@@ -46,7 +46,7 @@ module.exports = {
             }
         } catch (error) {
             console.log('ErrorCatch: ', error.message)
-            req.flash('alertMsg', 'Gagal Upload')
+            req.flash('alertMsg', 'Gagal Upload Try Catch')
             req.flash('alertStatus', 'danger')
             res.redirect('/')
         }
