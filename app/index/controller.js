@@ -27,7 +27,7 @@ module.exports = {
                 const files = req.files
                 const { category } = req.body
                 for(const file of files){
-                   await cloudinary.uploads(file.path).then(res => {
+                   await cloudinary.uploads(file.path, 'resky').then(res => {
                        const photos = Photo({
                             category,
                             image: res.url
