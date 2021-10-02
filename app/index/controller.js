@@ -25,11 +25,12 @@ module.exports = {
                 res.redirect('/')    
             } else {
                 const files = req.files
-                const { category } = req.body
+                const { category, title, folder } = req.body
                 for(const file of files){
-                   await cloudinary.uploads(file.path, 'resky').then(res => {
+                   await cloudinary.uploads(file.path, `resky/${folder}`).then(res => {
                        const photos = Photo({
                             category,
+                            title,
                             image: res.url
                         })
                         console.log(res.url);
@@ -38,7 +39,6 @@ module.exports = {
                        req.flash('alertMsg', 'Gagal Upload Cloudinary')
                        req.flash('alertStatus', 'danger')
                        console.log('error catch cloudinary', err);
-                   }).finally(() => {
                    })
                 }
                 req.flash('alertMsg', 'Berhasil Tambah Gambar')

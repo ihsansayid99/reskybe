@@ -16,13 +16,26 @@
   <div class="container">
     <div class="row h-100">
       <div class="col-sm-12 col-md-6 mx-auto align-self-center">
-        <div class="text-center">
+        <div class="">
           <div class="mb-2">
             <%- include ./partials/message.ejs %>
           </div>
-          <h1>Hi, Resky. Silahkan upload foto anda!</h1>
+          <h1 class="text-center">Hi, Resky. Silahkan upload foto anda!</h1>
           <form id="formtarget" action="/upload" method="POST" enctype="multipart/form-data" class="pt-5">
+            <div class="col-12 mb-2">
+              <div class="form-grup">
+                <label for="folder">Masukan Nama Folder : <span class="text-danger">Dilarang Symbol ( #!@$%^&* )</span></label>
+                <input type="text" name="folder" id="folder" class="form-control" required placeholder="Masukan Judul..">
+              </div>
+            </div>
+            <div class="col-12 mb-2">
+              <div class="form-grup">
+                <label for="title">Masukan Judul :</label>
+                <input type="text" name="title" class="form-control" required placeholder="Masukan Judul..">
+              </div>
+            </div>
             <div class="col-12">
+              <label for="category">Pilih Kategori</label>
               <select name="category" class="form-control">
                 <option value="portrait">Portrait</option>
                 <option value="wedding">Wedding</option>
@@ -44,5 +57,13 @@
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
   crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script>
+    $('#folder').keypress(function (e) {
+        var txt = String.fromCharCode(e.which);
+        if (!txt.match(/[A-Za-z0-9. ]/)) {
+            return false;
+        }
+    });
+  </script>
 </body>
 </html>

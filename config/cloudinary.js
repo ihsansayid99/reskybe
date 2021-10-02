@@ -16,7 +16,8 @@ exports.uploads = (file, folder) => {
             })
         }, {
             resource_type: "auto",
-            folder: folder
+            folder: folder,
+            use_filename: true
         })
     })
 }

@@ -7,6 +7,10 @@ let photoSchema = mongoose.Schema({
         default: 'wedding',
         required: [true, 'Category Wajib Diisi']
     },
+    title: {
+        type: String,
+        required: [true, 'Judul Folder Wajib diisi!']
+    },
     image: {
         type: String,
         required: [true, 'Gambar Wajib Ada']
