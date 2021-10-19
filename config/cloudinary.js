@@ -13,11 +13,28 @@ exports.uploads = (file, folder) => {
             resolve({
                 url: result.secure_url,
                 id: result.public_id,
+                signature: result.signature
             })
         }, {
             resource_type: "auto",
             folder: folder,
             use_filename: true
+        })
+    })
+}
+
+exports.deletePhoto = (publicId) => {
+    return cloudinary.v2.uploader.destroy(publicId, function(result){
+        console.log("response delete photo : ", result);
+    })
+}
+
+exports.deleteFolder = (folder) => {
+    return new Promise(resolve => {
+        cloudinary.api.delete_folder(folder, (result) => {
+            resolve({
+                message: "Berhasil Hapus"
+            })
         })
     })
 }

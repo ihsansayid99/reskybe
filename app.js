@@ -9,6 +9,10 @@ const flash = require('connect-flash')
 const cors = require('cors')
 const indexRouter = require('./app/index/router');
 const listImageRouter = require('./app/api/router');
+const frontendRouter = require('./app/frontend/index/router')
+const galleryRouter = require('./app/frontend/gallery/router')
+const aboutRouter = require('./app/frontend/about/router')
+const contactRouter = require('./app/frontend/contact/router')
 
 const app = express();
 
@@ -32,7 +36,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors())
 
-app.use('/', indexRouter);
+//Frontend
+app.use('/', frontendRouter)
+app.use('/gallery', galleryRouter)
+app.use('/about', aboutRouter)
+app.use('/contact', contactRouter)
+//Backend
+app.use('/admin', indexRouter);
 app.use('/images', express.static(path.join(__dirname,'images')))
 app.use('/get-images', listImageRouter);
 

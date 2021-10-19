@@ -21,7 +21,7 @@
             <%- include ./partials/message.ejs %>
           </div>
           <h1 class="text-center">Hi, Resky. Silahkan upload foto anda!</h1>
-          <form id="formtarget" action="/upload" method="POST" enctype="multipart/form-data" class="pt-5">
+          <form id="formtarget" action="/admin/upload" method="POST" enctype="multipart/form-data" class="pt-5">
             <div class="col-12 mb-2">
               <div class="form-grup">
                 <label for="folder">Masukan Nama Folder : <span class="text-danger">Dilarang Symbol ( #!@$%^&* )</span></label>
@@ -29,9 +29,15 @@
               </div>
             </div>
             <div class="col-12 mb-2">
-              <div class="form-grup">
+              <div class="form-group">
                 <label for="title">Masukan Judul :</label>
                 <input type="text" name="title" class="form-control" required placeholder="Masukan Judul..">
+              </div>
+            </div>
+            <div class="col-12 mb-2">
+              <div class="form-group">
+                <label for="desc">Masukan Deskripsi :</label>
+                <textarea name="desc" class="form-control" cols="30" rows="5"></textarea>
               </div>
             </div>
             <div class="col-12">
@@ -49,14 +55,61 @@
         </div>
       </div>
     </div>
+    <div class="text-center py-5">
+      <h2>List Folder ( *Delete Only )</h2>
+      <div class="d-flex my-3">
+        <% if(photos.length > 0) { %>
+          <% for(var i=0; i < photos.length; i++) { %>
+            <div class="card mr-5" style="width: 18rem;">
+              <img class="card-img-top" src="<%= photos[i].thumbnail %>" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title"><%= photos[i].titleName %></h5>
+                <p class="card-text"><%= photos[i].category %></p>
+                <p class="card-text">Jumlah Photo: <%= photos[i].photo.length %></p>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#photoImage-<%= photos[i]._id %>">
+                  Delete Folder
+                </button>
+    
+                <!-- Modal -->
+                <div class="modal fade" id="photoImage-<%= photos[i]._id %>" tabindex="-1" role="dialog" aria-labelledby="photoImageLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="photoImageLabel">Hapus Folder <%= photos[i].titleName %> ?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        Apakah anda yakin untuk menghapus folder dengan nama <%= photos[i].titleName %>,
+                        dengan jumlah photo : <%= photos[i].photo.length %> ?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
+                        <form action="/admin/delete-folder/<%= photos[i]._id %>?_method=DELETE" method="post" style="display: inline-flex;">
+                          <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        <% } else { %>
+          <h3>Data masih Kosong !</h3>
+        <% } %>
+      </div>
+    </div>
   </div>
   
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <<script
+  <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
   crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script>
     $('#folder').keypress(function (e) {
         var txt = String.fromCharCode(e.which);
