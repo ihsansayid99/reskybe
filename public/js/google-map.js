@@ -46,7 +46,7 @@ function init() {
     var addresses = ['Cianjur'];
 
     for (var x = 0; x < addresses.length; x++) {
-        $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAQon6-4pyxYv4h78Jt2iN98VNsCnlKvNg&address='+addresses[x]+'&sensor=false', null, function (data) {
+        $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+addresses[x]+'&key=AIzaSyAQon6-4pyxYv4h78Jt2iN98VNsCnlKvNg&sensor=false', null, function (data) {
             var p = data.results[0].geometry.location
             console.log("latitude: ", data.results[0]);
             var latlng = new google.maps.LatLng(p.lat, p.lng);
