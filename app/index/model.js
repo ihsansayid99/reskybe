@@ -34,7 +34,7 @@ let categorySchema = mongoose.Schema({
     desc: String,
     category: {
         type: String,
-        enum: ['portrait', 'wedding'],
+        enum: ['portrait', 'wedding', 'prewedding'],
         default: 'wedding',
         required: [true, 'Category Wajib Diisi']
     },
