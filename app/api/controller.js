@@ -1,17 +1,26 @@
-const Photo = require('../index/model')
+const { photoModel, categoryModel, homeModel } = require('../index/model')
 
 module.exports = {
-    listImage: async (req,res) => {
+    portofolio: async (req,res) => {
         try{
-            await Photo.find({}, function(err, images) {
-                const imageMap = images
-                res.status(201).json({
-                    message: 'data Berhasil diambil',
-                    data: imageMap
-                })
+            const photos = await categoryModel.find({}).populate('photo');
+            res.status(201).json({
+                status: 'success',
+                data: photos
             })
         }catch(err){
             console.log(err.message)
+        }
+    },
+    homepages: async(req,res) => {
+        try {
+            const homes = await homeModel.find({});
+            res.status(201).json({
+                status: 'success',
+                data: homes
+            })
+        } catch (error) {
+            console.log(error.message)
         }
     }
 }

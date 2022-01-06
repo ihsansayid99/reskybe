@@ -2,9 +2,11 @@ const express = require('express')
 const router = express.Router()
 
 const {
-    listImage
+    portofolio,
+    homepages
 } = require('./controller')
 
-router.get('/', listImage)
+router.get('/portofolio', portofolio)
+router.get('/homepages', homepages)
 
 module.exports = router

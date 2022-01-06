@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADMIN PAGE - MASAMASAPHOTOGRAPHY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- <div class="loading" id="loadingbar">Loading&#8230;</div> -->
+  <div class="container">
+    <div class="row h-100">
+      <div class="col-sm-12 col-md-6 mx-auto align-self-center">
+        <div class="">
+          <div class="mb-2">
+            <%- include ./partials/message.ejs %>
+          </div>
+          <h1 class="text-center">Hi, Resky. Silahkan isi data untuk kebutuhan website</h1>
+          <form id="formtarget" action="/admin/homepages" method="POST" enctype="multipart/form-data" class="pt-5">
+            <div class="col-12 mb-2">
+              <div class="form-group">
+                <label for="title">Masukan Judul :</label>
+                <input type="text" name="title" class="form-control" required placeholder="Masukan Judul..">
+              </div>
+            </div>
+            <div class="col-12 mb-2">
+                <div class="form-group">
+                  <label for="title">Masukan Sub Judul :</label>
+                  <input type="text" name="subtitle" class="form-control" required placeholder="Masukan Sub Judul..">
+                </div>
+              </div>
+            <div class="col-12 mb-2">
+              <div class="form-group">
+                <label for="title">Masukan Description Campaign :</label>
+                <input type="text" name="desc" class="form-control" required placeholder="Masukan Descriptioon..">
+              </div>
+            </div>
+            <div class="col-12 mb-2">
+              <div class="form-group">
+                <label for="title">Masukan Text Button Campaign :</label>
+                <input type="text" name="btnText" class="form-control" required placeholder="nama text button..">
+              </div>
+            </div>
+            <div class="col-12 mb-2">
+              <div class="form-group">
+                <label for="title">Masukan Link campaign :</label>
+                <input type="text" name="campaignLink" class="form-control" required placeholder="ex: https://instagram.com/...">
+              </div>
+            </div>
+            <div class="d-flex col-12 mt-3">
+              <input type="file" name="image" class="form-control mr-2">
+              <button class="btn btn-primary" type="submit">Simpan</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-12 text-center py-5">
+        <h2>List Home Slider ( *Delete Only )</h2>
+        <div class="d-flex my-3">
+          <% if(home.length > 0) { %>
+            <% for(var i=0; i < home.length; i++) { %>
+              <div class="card mr-5" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title"><%= home[i].title %></h5>
+                  <p class="card-text"><%= home[i].subTitle %></p>
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#photoImage-<%= home[i]._id %>">
+                    Delete Folder
+                  </button>
+      
+                  <!-- Modal -->
+                  <div class="modal fade" id="photoImage-<%= home[i]._id %>" tabindex="-1" role="dialog" aria-labelledby="photoImageLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="photoImageLabel">Hapus Data <%= home[i].title %> ?</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Apakah anda yakin untuk menghapus folder dengan nama <%= home[i].title %>,
+                          dengan desc : <%= home[i].desc %> ?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
+                          <form action="/admin/homepages/delete-data/<%= home[i]._id %>?_method=DELETE" method="post" style="display: inline-flex;">
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% } %>
+          <% } else { %>
+            <h3>Data masih Kosong !</h3>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-const { photoModel, categoryModel } = require('./model')
+const { photoModel, categoryModel, quteModel, homeModel } = require('./model')
 const cloudinary = require('../../config/cloudinary')
 const upload = require('../../config/upload')
 
@@ -17,6 +17,60 @@ module.exports = {
             console.log(err.message)
         }
     },
+    viewHomeService: async (req,res) => {
+        try{
+            const alertMessage = req.flash('alertMsg')
+            const alertStatus = req.flash('alertStatus')
+            const alert = { message: alertMessage, status: alertStatus};
+            const home = await homeModel.find({});
+            res.render('home', {
+                alert,
+                home
+            })
+        }catch(err){
+            console.log(err.message)
+        }
+    },
+    actionHomeSave: async(req,res) => {
+        try {
+            await upload(req,res)
+            if(req.files.length <= 0){
+                console.log('Error : Image Kosong!')
+                req.flash('alertMsg', 'Gagal Upload Image Kosong')
+                req.flash('alertStatus', 'danger')
+                res.redirect('/admin/homepages')    
+            } else {
+                const files = req.files
+                const { title, subtitle, desc, btnText, campaignLink } = req.body
+                for(const file of files){
+                   await cloudinary.uploads(file.path, `resky/slider`).then(res => {
+                        const homeModels = homeModel({
+                            backgroundImage: res.url,
+                            title,
+                            subTitle: subtitle,
+                            desc,
+                            buttonText: btnText,
+                            linkCampaign: campaignLink,
+                            public_id: res.id
+                        })
+                        homeModels.save()
+                        req.flash('alertMsg', 'Berhasil Tambah Data')
+                        req.flash('alertStatus', 'success')
+                    }).catch(err => {
+                        req.flash('alertMsg', 'Gagal Upload Cloudinary')
+                        req.flash('alertStatus', 'danger')
+                        console.log('error catch cloudinary', err);
+                    })
+                }
+            }
+            res.redirect('/admin/homepages')
+        } catch (error) {
+            console.log('ErrorCatch: ', error.message)
+            req.flash('alertMsg', 'Gagal Upload Try Catch')
+            req.flash('alertStatus', 'danger')
+            res.redirect('/admin/homepages')
+        }
+    },
     actionUpload: async(req,res) => {
         try {
             await upload(req,res)
@@ -27,7 +81,8 @@ module.exports = {
                 res.redirect('/admin')    
             } else {
                 const files = req.files
-                const { category, title, folder, desc } = req.body
+                const { category, title, folder, desc, hightlightTitle, client, dateProject,
+                        team, services } = req.body
                 let photoArray = []
                 let thumbnail
                 for(const file of files){
@@ -49,6 +104,11 @@ module.exports = {
                 }
                 const categoryModels = categoryModel({
                     titleName: title,
+                    highlightTitle: hightlightTitle,
+                    client,
+                    date: dateProject,
+                    team,
+                    services,
                     folderName: folder,
                     thumbnail,
                     desc,
@@ -95,5 +155,24 @@ module.exports = {
             req.flash('alertStatus', 'danger')
             res.redirect('/admin')
         }
-    }
+    },
+    actionDeleteFolderHome: async (req, res) => {
+        try {
+            const {id} = req.params
+            const homes = await homeModel.findOne({_id: id})
+            console.log("public id : ", homes.public_id);
+            await cloudinary.deletePhoto(`${homes.public_id}`)
+            await homeModel.findOneAndRemove({
+                _id: id
+            })
+            req.flash('alertMsg', 'Berhasil Hapus Data!')
+            req.flash('alertStatus', 'success')
+            res.redirect('/admin/homepages')
+        } catch (error) {
+            console.log('ErrorCatch: ', error.message)
+            req.flash('alertMsg', 'Gagal Upload Try Catch')
+            req.flash('alertStatus', 'danger')
+            res.redirect('/admin/homepages')
+        }
+    },
 }

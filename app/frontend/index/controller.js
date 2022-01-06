@@ -1,13 +1,9 @@
-const { categoryModel } = require("../../index/model")
+const path = require('path');
 
 module.exports = {
     viewFrontendIndex: async (req,res) => {
         try{
-            const photos = await categoryModel.find({}).populate('photo')
-            res.render('frontend/index', {
-                photos,
-                page: 'index'
-            })
+            res.sendFile(path.join(__dirname, '../../../index.html'));
         }catch(err){
             console.log(err.message)
         }
